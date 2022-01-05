@@ -1,6 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'weather_api.dart';
+
+Future main() async {
+  await dotenv.load(fileName: "assets/.env");
+
   runApp(const MyApp());
 }
 
@@ -48,21 +55,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  WeatherAPI wapi = WeatherAPI();
+  double currentTemperature = 0;
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -75,41 +74,53 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      //backgroundColor: const Color(0xFF003166),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: width*0.15, vertical: height*0.15),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextField(
+              style: const TextStyle(color: Colors.white, fontSize: 25),
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color(0xFF0055b3),
+                  //contentPadding: const EdgeInsets.all(100),
+                  hintText: "City name",
+                  hintStyle: const TextStyle(color: Colors.white),
+                  border: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                    gapPadding: 200,
+                    borderSide: const BorderSide(color: Colors.white),
+                    borderRadius: BorderRadius.circular(25.7),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    gapPadding: 200,
+                    borderSide: const BorderSide(color: Color(0xFF0055b3)),
+                    borderRadius: BorderRadius.circular(25.7),
+                  )),
+              onChanged: (val) {
+                setState(() => wapi.city = val);
+              },
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              '${currentTemperature.toStringAsFixed(0)} ºC', 
+              style: const TextStyle(fontSize: 35),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                double temp = await wapi.currentTemperature;
+                setState(() {
+                  currentTemperature = temp;
+                });
+              },
+              child: const Text('PRESS ME', style: TextStyle(fontSize: 30),),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
