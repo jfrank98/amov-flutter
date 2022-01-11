@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'weather_api.dart';
+import 'dart:developer' as developer;
 
 Future main() async {
   await dotenv.load(fileName: "assets/.env");
@@ -31,6 +33,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English, no country code
+        Locale('pt', ''), // Portugal, no country code
+      ],
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -76,47 +87,52 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       //backgroundColor: const Color(0xFF003166),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: width*0.15, vertical: height*0.15),
+        padding: EdgeInsets.symmetric(
+            horizontal: width * 0.15, vertical: height * 0.15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextField(
-              style: const TextStyle(color: Colors.white, fontSize: 25),
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color(0xFF0055b3),
-                  //contentPadding: const EdgeInsets.all(100),
-                  hintText: "City name",
-                  hintStyle: const TextStyle(color: Colors.white),
-                  border: InputBorder.none,
-                  focusedBorder: OutlineInputBorder(
-                    gapPadding: 200,
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(25.7),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    gapPadding: 200,
-                    borderSide: const BorderSide(color: Color(0xFF0055b3)),
-                    borderRadius: BorderRadius.circular(25.7),
-                  )),
-              onChanged: (val) {
-                setState(() => wapi.city = val);
-              },
-            ),
+            // TextField(
+            //   style: const TextStyle(color: Colors.white, fontSize: 25),
+            //   textAlign: TextAlign.center,
+            //   decoration: InputDecoration(
+            //       filled: true,
+            //       fillColor: const Color(0xFF0055b3),
+            //       //contentPadding: const EdgeInsets.all(100),
+            //       hintText: "City name",
+            //       hintStyle: const TextStyle(color: Colors.white),
+            //       border: InputBorder.none,
+            //       focusedBorder: OutlineInputBorder(
+            //         gapPadding: 200,
+            //         borderSide: const BorderSide(color: Colors.white),
+            //         borderRadius: BorderRadius.circular(25.7),
+            //       ),
+            //       enabledBorder: OutlineInputBorder(
+            //         gapPadding: 200,
+            //         borderSide: const BorderSide(color: Color(0xFF0055b3)),
+            //         borderRadius: BorderRadius.circular(25.7),
+            //       )),
+            //   onChanged: (val) {
+            //     //setState(() => wapi.city = val);
+            //   },
+            // ),
             Text(
-              '${currentTemperature.toStringAsFixed(0)} ºC', 
+              '${currentTemperature.toStringAsFixed(0)} ºC',
               style: const TextStyle(fontSize: 35),
             ),
             ElevatedButton(
               onPressed: () async {
                 double temp = await wapi.currentTemperature;
+                developer.log("aaaaaaaaaaaaaaa rtghrhSRHWE");
                 setState(() {
                   currentTemperature = temp;
                 });
               },
-              child: const Text('PRESS ME', style: TextStyle(fontSize: 30),),
+              child: const Text(
+                'PRESS ME',
+                style: TextStyle(fontSize: 30),
+              ),
             ),
           ],
         ),
