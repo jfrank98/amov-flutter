@@ -1,5 +1,5 @@
 name: weather
-description: A new Flutter project.
+description: Simple app to show the weather for the current location.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -40,6 +40,7 @@ dependencies:
   flutter_localizations: 
     sdk: flutter
     version: ^0.0.0
+  shared_preferences: ^2.0.12
 
 dev_dependencies:
   flutter_test:
