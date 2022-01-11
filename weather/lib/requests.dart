@@ -7,7 +7,7 @@ class Requests {
 
   setCoordinates(double? lat, double? lon) {
     weather_request =
-        "https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${dotenv.env['API_KEY']}";
+        "https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=alerts&units=metric&appid=${dotenv.env['API_KEY']}";
   }
 
   set city(String city) {

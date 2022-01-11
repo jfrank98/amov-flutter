@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'weather_api.dart';
+import 'generated/l10n.dart';
+import 'providers/weather_api.dart';
 import 'dart:developer' as developer;
 
 Future main() async {
@@ -34,15 +35,26 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       localizationsDelegates: const [
+        S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('en', ''), // English, no country code
-        Locale('pt', ''), // Portugal, no country code
+        Locale('pt', ''), // Portuguese, no country code
       ],
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      localeResolutionCallback: (
+        locale,
+        supportedLocales,
+      ) {
+        if (supportedLocales.contains(Locale(locale!.languageCode))) {
+          return locale;
+        } else {
+          return const Locale('en', '');
+        }
+      },
     );
   }
 }
@@ -129,9 +141,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   currentTemperature = temp;
                 });
               },
-              child: const Text(
-                'PRESS ME',
-                style: TextStyle(fontSize: 30),
+              child: Text(
+                S.of(context).pageHomeWelcome('nozes'),
+                style: const TextStyle(fontSize: 30),
               ),
             ),
           ],

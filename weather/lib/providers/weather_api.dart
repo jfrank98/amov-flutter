@@ -5,7 +5,7 @@ import 'package:location/location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather/weather_data.dart';
-import 'requests.dart';
+import '../requests.dart';
 import 'dart:developer' as developer;
 
 class WeatherAPI {

@@ -49,6 +49,66 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `Confirm`
+  String get pageHomeConfirm {
+    return Intl.message(
+      'Confirm',
+      name: 'pageHomeConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome {name}`
+  String pageHomeWelcome(Object name) {
+    return Intl.message(
+      'Welcome $name',
+      name: 'pageHomeWelcome',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `{gender, select, male {Hi man!} female {Hi woman!} other {Hi there!}}`
+  String pageHomeWelcomeGender(String gender) {
+    return Intl.gender(
+      gender,
+      male: 'Hi man!',
+      female: 'Hi woman!',
+      other: 'Hi there!',
+      name: 'pageHomeWelcomeGender',
+      desc: '',
+      args: [gender],
+    );
+  }
+
+  /// `{role, select, admin {Hi admin!} manager {Hi manager!} other {Hi visitor!}}`
+  String pageHomeWelcomeRole(Object role) {
+    return Intl.select(
+      role,
+      {
+        'admin': 'Hi admin!',
+        'manager': 'Hi manager!',
+        'other': 'Hi visitor!',
+      },
+      name: 'pageHomeWelcomeRole',
+      desc: '',
+      args: [role],
+    );
+  }
+
+  /// `{howMany, plural, one{1 message} other{{howMany} messages}}`
+  String pageNotificationsCount(num howMany) {
+    return Intl.plural(
+      howMany,
+      one: '1 message',
+      other: '$howMany messages',
+      name: 'pageNotificationsCount',
+      desc: '',
+      args: [howMany],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -57,6 +117,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'pt'),
     ];
   }
 

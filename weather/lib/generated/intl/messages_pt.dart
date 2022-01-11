@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a pt locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,25 +18,25 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'pt';
 
-  static String m0(name) => "Welcome ${name}";
+  static String m0(name) => "Bem vindo ${name}";
 
   static String m1(gender) =>
-      "${Intl.gender(gender, female: 'Hi woman!', male: 'Hi man!', other: 'Hi there!')}";
+      "${Intl.gender(gender, female: 'Boas mana!', male: 'Boas mano!', other: 'Boas pessoa!')}";
 
   static String m2(role) => "${Intl.select(role, {
-            'admin': 'Hi admin!',
-            'manager': 'Hi manager!',
-            'other': 'Hi visitor!',
+            'admin': 'Boas admin!',
+            'manager': 'Boas gestor!',
+            'other': 'Boas visitante!',
           })}";
 
   static String m3(howMany) =>
-      "${Intl.plural(howMany, one: '1 message', other: '${howMany} messages')}";
+      "${Intl.plural(howMany, one: '1 mensagem', other: '${howMany} mensagens')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "pageHomeConfirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+        "pageHomeConfirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
         "pageHomeWelcome": m0,
         "pageHomeWelcomeGender": m1,
         "pageHomeWelcomeRole": m2,
