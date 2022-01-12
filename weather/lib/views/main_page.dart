@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:weather/generated/l10n.dart';
 import 'package:weather/models/weather_info.dart';
@@ -15,7 +16,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   WeatherAPI wapi = WeatherAPI();
-  double currentTemperature = 0;
+  double currentTemperature = 0, feelsLike = 0, maxTemp = 0, minTemp = 0;
 
   double? cityLat;
   double? cityLon;
@@ -58,68 +59,80 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       //backgroundColor: const Color(0xFF003166),
-      body: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: width * 0.15, vertical: height * 0.15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // TextField(
-            //   style: const TextStyle(color: Colors.white, fontSize: 25),
-            //   textAlign: TextAlign.center,
-            //   decoration: InputDecoration(
-            //       filled: true,
-            //       fillColor: const Color(0xFF0055b3),
-            //       //contentPadding: const EdgeInsets.all(100),
-            //       hintText: "City name",
-            //       hintStyle: const TextStyle(color: Colors.white),
-            //       border: InputBorder.none,
-            //       focusedBorder: OutlineInputBorder(
-            //         gapPadding: 200,
-            //         borderSide: const BorderSide(color: Colors.white),
-            //         borderRadius: BorderRadius.circular(25.7),
-            //       ),
-            //       enabledBorder: OutlineInputBorder(
-            //         gapPadding: 200,
-            //         borderSide: const BorderSide(color: Color(0xFF0055b3)),
-            //         borderRadius: BorderRadius.circular(25.7),
-            //       )),
-            //   onChanged: (val) {
-            //     //setState(() => wapi.city = val);
-            //   },
-            // ),
-            Text(
-              '${currentTemperature.toStringAsFixed(0)} ºC',
-              style: const TextStyle(fontSize: 35),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // TextField(
+          //   style: const TextStyle(color: Colors.white, fontSize: 25),
+          //   textAlign: TextAlign.center,
+          //   decoration: InputDecoration(
+          //       filled: true,
+          //       fillColor: const Color(0xFF0055b3),
+          //       //contentPadding: const EdgeInsets.all(100),
+          //       hintText: "City name",
+          //       hintStyle: const TextStyle(color: Colors.white),
+          //       border: InputBorder.none,
+          //       focusedBorder: OutlineInputBorder(
+          //         gapPadding: 200,
+          //         borderSide: const BorderSide(color: Colors.white),
+          //         borderRadius: BorderRadius.circular(25.7),
+          //       ),
+          //       enabledBorder: OutlineInputBorder(
+          //         gapPadding: 200,
+          //         borderSide: const BorderSide(color: Color(0xFF0055b3)),
+          //         borderRadius: BorderRadius.circular(25.7),
+          //       )),
+          //   onChanged: (val) {
+          //     //setState(() => wapi.city = val);
+          //   },
+          // ),
+          Text(
+            '${S.of(context).pageCurrentTemperature(currentTemperature.round())}ºC',
+            style: const TextStyle(fontSize: 25),
+          ),
+          Text(S.of(context).pageFeelsLike(feelsLike.round()),
+              style: const TextStyle(fontSize: 20)),
+          Text(S.of(context).pageMaxTemp(maxTemp.round()),
+              style: const TextStyle(fontSize: 20)),
+          Text(S.of(context).pageMinTemp(minTemp.round()),
+              style: const TextStyle(fontSize: 20)),
+          ElevatedButton(
+            onPressed: () async {
+              await _fetchLocation();
+              var json = await WeatherAPI.fetchWeatherData(
+                  _locationData?.latitude, _locationData?.longitude);
+              current = await WeatherAPI.parseCurrentWeatherData(json);
+
+              // for (var daily
+              //     in (await WeatherAPI.parseDailyWeatherData(json))) {
+              //   developer.log('${daily.maxTemp}');
+              //   DateTime date = DateTime.fromMillisecondsSinceEpoch(
+              //       daily.sunriseTime * 1000);
+              //   developer.log('sunrise time: $date');
+              // }
+
+              //developer.log("aaaaaaaaaaaaaaa rtghrhSRHWE");
+              setState(() {
+                feelsLike = current.feelsLike;
+                currentTemperature = current.temp;
+                maxTemp = current.maxTemp;
+                minTemp = current.minTemp;
+              });
+            },
+            child: Text(
+              S.of(context).pageHomeWelcome('nozes'),
+              style: const TextStyle(fontSize: 30),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await _fetchLocation();
-                var json = await WeatherAPI.fetchWeatherData(
-                        _locationData?.latitude, _locationData?.longitude)
-                    as Map<String, dynamic>;
-                current = await WeatherAPI.parseCurrentWeatherData(json);
-                //developer.log(
-                //await WeatherAPI.parseDailyWeatherData(json).toString());
-                developer.log("aaaaaaaaaaaaaaa rtghrhSRHWE");
-                setState(() {
-                  currentTemperature = current.temp;
-                });
-              },
-              child: Text(
-                S.of(context).pageHomeWelcome('nozes'),
-                style: const TextStyle(fontSize: 30),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        ],
+      )),
     );
   }
 }

@@ -48,7 +48,7 @@ class SelfUpdatedWeatherData {
     cityLon = json['lon'] as double;
     cityLat = json['lat'] as double;
 
-    current = WeatherInfo.fromJson(json['current']);
+    current = WeatherInfo.fromJson(json, json['current'], false);
 
     //hourlyArray = json['hourly'] as Map<String, dynamic>;
 

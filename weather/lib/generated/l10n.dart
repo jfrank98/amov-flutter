@@ -109,6 +109,46 @@ class S {
       args: [howMany],
     );
   }
+
+  /// `Current temperature: {temp}`
+  String pageCurrentTemperature(Object temp) {
+    return Intl.message(
+      'Current temperature: $temp',
+      name: 'pageCurrentTemperature',
+      desc: '',
+      args: [temp],
+    );
+  }
+
+  /// `Feels like: {feelsLike}`
+  String pageFeelsLike(Object feelsLike) {
+    return Intl.message(
+      'Feels like: $feelsLike',
+      name: 'pageFeelsLike',
+      desc: '',
+      args: [feelsLike],
+    );
+  }
+
+  /// `Max. temperature: {maxTemp}`
+  String pageMaxTemp(Object maxTemp) {
+    return Intl.message(
+      'Max. temperature: $maxTemp',
+      name: 'pageMaxTemp',
+      desc: '',
+      args: [maxTemp],
+    );
+  }
+
+  /// `Min. temperature: {minTemp}`
+  String pageMinTemp(Object minTemp) {
+    return Intl.message(
+      'Min. temperature: $minTemp',
+      name: 'pageMinTemp',
+      desc: '',
+      args: [minTemp],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -20,26 +20,38 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'pt';
 
-  static String m0(name) => "Bem vindo ${name}";
+  static String m0(temp) => "Temperature atual: ${temp}";
 
-  static String m1(gender) =>
+  static String m1(feelsLike) => "Parecem: ${feelsLike}";
+
+  static String m2(name) => "Bem vindo ${name}";
+
+  static String m3(gender) =>
       "${Intl.gender(gender, female: 'Boas mana!', male: 'Boas mano!', other: 'Boas pessoa!')}";
 
-  static String m2(role) => "${Intl.select(role, {
+  static String m4(role) => "${Intl.select(role, {
             'admin': 'Boas admin!',
             'manager': 'Boas gestor!',
             'other': 'Boas visitante!',
           })}";
 
-  static String m3(howMany) =>
+  static String m5(maxTemp) => "Temperatura máxima: ${maxTemp}";
+
+  static String m6(minTemp) => "Temperature mínima: ${minTemp}";
+
+  static String m7(howMany) =>
       "${Intl.plural(howMany, one: '1 mensagem', other: '${howMany} mensagens')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "pageCurrentTemperature": m0,
+        "pageFeelsLike": m1,
         "pageHomeConfirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
-        "pageHomeWelcome": m0,
-        "pageHomeWelcomeGender": m1,
-        "pageHomeWelcomeRole": m2,
-        "pageNotificationsCount": m3
+        "pageHomeWelcome": m2,
+        "pageHomeWelcomeGender": m3,
+        "pageHomeWelcomeRole": m4,
+        "pageMaxTemp": m5,
+        "pageMinTemp": m6,
+        "pageNotificationsCount": m7
       };
 }

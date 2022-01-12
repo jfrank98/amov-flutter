@@ -24,7 +24,7 @@ class WeatherAPI {
 
   static Future<WeatherInfo> parseCurrentWeatherData(
           Map<String, dynamic> json) async =>
-      WeatherInfo.fromJson(json['current']);
+      WeatherInfo.fromJson(json, json['current'], false);
 
   static Future<List<WeatherInfo>> parseHourlyWeatherData(
       Map<String, dynamic> json) async {
@@ -32,7 +32,7 @@ class WeatherAPI {
     List<WeatherInfo> returnArray = List.empty();
 
     for (var hourly in hourlyArray) {
-      returnArray.add(WeatherInfo.fromJson(hourly));
+      returnArray.add(WeatherInfo.fromJson(json, hourly, false));
     }
 
     return returnArray;
@@ -41,10 +41,10 @@ class WeatherAPI {
   static Future<List<WeatherInfo>> parseDailyWeatherData(
       Map<String, dynamic> json) async {
     var dailyArray = json['daily'];
-    List<WeatherInfo> returnArray = List.empty();
+    List<WeatherInfo> returnArray = [];
 
     for (var daily in dailyArray) {
-      returnArray.add(WeatherInfo.fromJson(daily));
+      returnArray.add(WeatherInfo.fromJson(json, daily, true));
     }
 
     return returnArray;
