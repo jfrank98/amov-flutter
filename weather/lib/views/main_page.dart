@@ -105,6 +105,7 @@ class _MainPageState extends State<MainPage> {
               style: const TextStyle(fontSize: 20)),
           ElevatedButton(
             onPressed: () async {
+              developer.log('clicked');
               await _fetchLocation();
               var json = await WeatherAPI.fetchWeatherData(
                   _locationData?.latitude, _locationData?.longitude);
