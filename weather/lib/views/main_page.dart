@@ -17,6 +17,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   WeatherAPI wapi = WeatherAPI();
   double currentTemperature = 0, feelsLike = 0, maxTemp = 0, minTemp = 0;
+  String date = '';
 
   double? cityLat;
   double? cityLon;
@@ -45,16 +46,18 @@ class _MainPageState extends State<MainPage> {
 
     await _getCoordinates();
 
-    //setState(() {});
+    setState(() {});
     // Desafio de usar o onLocationChanged
     location.onLocationChanged.listen(((locationData) {
-      _locationData = locationData;
+      setState(() {
+        _locationData = locationData;
+      });
     }));
   }
 
   Future<void> _getCoordinates() async {
     _locationData = await location.getLocation();
-    // setState(() {});
+    setState(() {});
   }
 
   @override
@@ -103,24 +106,17 @@ class _MainPageState extends State<MainPage> {
               style: const TextStyle(fontSize: 20)),
           Text(S.of(context).pageMinTemp(minTemp.round()),
               style: const TextStyle(fontSize: 20)),
+          Text(date),
           ElevatedButton(
             onPressed: () async {
-              developer.log('clicked');
               await _fetchLocation();
               var json = await WeatherAPI.fetchWeatherData(
                   _locationData?.latitude, _locationData?.longitude);
               current = await WeatherAPI.parseCurrentWeatherData(json);
 
-              // for (var daily
-              //     in (await WeatherAPI.parseDailyWeatherData(json))) {
-              //   developer.log('${daily.maxTemp}');
-              //   DateTime date = DateTime.fromMillisecondsSinceEpoch(
-              //       daily.sunriseTime * 1000);
-              //   developer.log('sunrise time: $date');
-              // }
-
-              //developer.log("aaaaaaaaaaaaaaa rtghrhSRHWE");
               setState(() {
+                date = DateFormat.Hms().format(
+                    DateTime.fromMillisecondsSinceEpoch(current.date * 1000));
                 feelsLike = current.feelsLike;
                 currentTemperature = current.temp;
                 maxTemp = current.maxTemp;

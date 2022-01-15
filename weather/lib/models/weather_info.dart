@@ -13,6 +13,8 @@ class WeatherInfo {
   final int visibility;
   final double maxTemp;
   final double minTemp;
+  final double? precipitation;
+  final int date;
 
   WeatherInfo(
       {required this.maxTemp,
@@ -26,20 +28,30 @@ class WeatherInfo {
       required this.weather,
       required this.humidity,
       required this.uvi,
-      required this.visibility});
+      required this.visibility,
+      required this.date,
+      this.precipitation});
 
   factory WeatherInfo.fromJson(Map<String, dynamic> originalJSON,
-      Map<String, dynamic> json, bool daily) {
-    var temperature, maxTemperature, minTemperature, feelsLikeTemp;
+      Map<String, dynamic> json, bool daily, bool hourly) {
+    var temperature,
+        maxTemperature,
+        minTemperature,
+        feelsLikeTemp,
+        precipitation = 0.0;
 
-    if (daily) {
+    feelsLikeTemp = json['feels_like'];
+
+    if (hourly) {
+      precipitation = json['pop'];
+    } else if (daily) {
       temperature = json['temp']['day'];
       feelsLikeTemp = json['feels_like']['day'];
       maxTemperature = json['temp']['max'];
       minTemperature = json['temp']['min'];
     } else {
       temperature = json['temp'];
-      feelsLikeTemp = json['feels_like'];
+      precipitation = originalJSON['hourly'][0]['pop'].toDouble();
       maxTemperature = originalJSON['daily'][0]['temp']['max'];
       minTemperature = originalJSON['daily'][0]['temp']['min'];
     }
@@ -49,14 +61,16 @@ class WeatherInfo {
         maxTemp: maxTemperature,
         minTemp: minTemperature,
         feelsLike: feelsLikeTemp,
-        windSpeed: json['wind_speed'],
+        date: json['dt'],
+        windSpeed: json['wind_speed'].toDouble(),
         sunriseTime: json['sunrise'],
         sunsetTime: json['sunset'],
         clouds: json['clouds'],
         weather: json['weather'][0]['main'],
         humidity: json['humidity'],
         uvi: json['uvi'].toDouble(),
-        visibility: json['visibility']);
+        visibility: json['visibility'],
+        precipitation: precipitation);
   }
 
   double? get currentTemperature {
