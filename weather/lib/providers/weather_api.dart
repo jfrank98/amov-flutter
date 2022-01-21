@@ -49,4 +49,8 @@ class WeatherAPI {
 
     return returnArray;
   }
+
+  static getUrlForIcon(String iconId) {
+    return 'https://openweathermap.org/img/wn/$iconId@2x.png';
+  }
 }

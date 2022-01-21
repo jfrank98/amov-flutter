@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather/generated/l10n.dart';
 import 'package:weather/models/weather_info.dart';
 import 'package:weather/providers/weather_api.dart';
@@ -18,9 +21,11 @@ class _MainPageState extends State<MainPage> {
   WeatherAPI wapi = WeatherAPI();
   double currentTemperature = 0, feelsLike = 0, maxTemp = 0, minTemp = 0;
   String date = '';
+  String imageUrl = '';
 
   double? cityLat;
   double? cityLon;
+
   late WeatherInfo current;
   List<WeatherInfo> hourly = List.empty();
   List<WeatherInfo> daily = List.empty();
@@ -30,6 +35,13 @@ class _MainPageState extends State<MainPage> {
 
   bool _serviceEnabled = false;
   PermissionStatus _permissionGranted = PermissionStatus.denied;
+
+  @override
+  void initState() {
+    super.initState();
+    imageUrl = "https://openweathermap.org/img/wn/10d@2x.png";
+    _getDataFromSharedPreferences();
+  }
 
   Future<void> _fetchLocation() async {
     // Verificar estado do serviço
@@ -45,19 +57,52 @@ class _MainPageState extends State<MainPage> {
     }
 
     await _getCoordinates();
-
     setState(() {});
-    // Desafio de usar o onLocationChanged
-    location.onLocationChanged.listen(((locationData) {
-      setState(() {
-        _locationData = locationData;
-      });
-    }));
+    developer.log("${_locationData!.latitude} ${_locationData!.longitude}");
+    // location.onLocationChanged.listen(((locationData) {
+    //     _locationData = locationData;
+    // }));
   }
 
   Future<void> _getCoordinates() async {
     _locationData = await location.getLocation();
     setState(() {});
+  }
+
+  Future<void> _getDataFromSharedPreferences() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> weatherData;
+    String? weatherDataStr = preferences.getString('weatherData');
+
+    if (weatherDataStr == null) {
+      await _fetchLocation();
+      var json = await WeatherAPI.fetchWeatherData(
+          _locationData?.latitude, _locationData?.longitude);
+
+      await _updateDataFromSharedPreferences(json);
+      weatherDataStr = preferences.getString('weatherData');
+    }
+
+    weatherData = jsonDecode(weatherDataStr!) as Map<String, dynamic>;
+
+    current = await WeatherAPI.parseCurrentWeatherData(weatherData);
+
+    setState(() {
+      date = DateFormat.Hms()
+          .format(DateTime.fromMillisecondsSinceEpoch(current.date * 1000));
+      feelsLike = current.feelsLike;
+      currentTemperature = current.temp;
+      maxTemp = current.maxTemp;
+      minTemp = current.minTemp;
+      imageUrl = WeatherAPI.getUrlForIcon(current.iconId);
+    });
+  }
+
+  Future<void> _updateDataFromSharedPreferences(
+      Map<String, dynamic> json) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('weatherData', jsonEncode(json));
   }
 
   @override
@@ -107,11 +152,13 @@ class _MainPageState extends State<MainPage> {
           Text(S.of(context).pageMinTemp(minTemp.round()),
               style: const TextStyle(fontSize: 20)),
           Text(date),
+          Image.network(imageUrl),
           ElevatedButton(
             onPressed: () async {
               await _fetchLocation();
               var json = await WeatherAPI.fetchWeatherData(
                   _locationData?.latitude, _locationData?.longitude);
+
               current = await WeatherAPI.parseCurrentWeatherData(json);
 
               setState(() {
@@ -121,7 +168,11 @@ class _MainPageState extends State<MainPage> {
                 currentTemperature = current.temp;
                 maxTemp = current.maxTemp;
                 minTemp = current.minTemp;
+                imageUrl = WeatherAPI.getUrlForIcon(current.iconId);
+                developer.log("aferg ${json['lat']} ${json['lon']}");
               });
+
+              await _updateDataFromSharedPreferences(json);
             },
             child: Text(
               S.of(context).pageHomeWelcome('nozes'),

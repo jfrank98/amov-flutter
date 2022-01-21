@@ -15,9 +15,11 @@ class WeatherInfo {
   final double minTemp;
   final double? precipitation;
   final int date;
+  final String iconId;
 
   WeatherInfo(
-      {required this.maxTemp,
+      {required this.iconId,
+      required this.maxTemp,
       required this.minTemp,
       required this.temp,
       required this.windSpeed,
@@ -57,10 +59,11 @@ class WeatherInfo {
     }
 
     return WeatherInfo(
-        temp: temperature,
-        maxTemp: maxTemperature,
-        minTemp: minTemperature,
-        feelsLike: feelsLikeTemp,
+        iconId: json['weather'][0]['icon'],
+        temp: temperature.toDouble(),
+        maxTemp: maxTemperature.toDouble(),
+        minTemp: minTemperature.toDouble(),
+        feelsLike: feelsLikeTemp.toDouble(),
         date: json['dt'],
         windSpeed: json['wind_speed'].toDouble(),
         sunriseTime: json['sunrise'],
