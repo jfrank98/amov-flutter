@@ -181,7 +181,10 @@ class _MainPageState extends State<MainPage> {
                   child: Center(
                       child: Column(
                     children: [
-                      Text('+${i++}',
+                      Text(
+                          DateFormat.E().format(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  dailyInfo.date * 1000)),
                           style: const TextStyle(
                               color: Color(0xFFf8f8f2), fontSize: 20)),
                       Image.network(
@@ -220,7 +223,10 @@ class _MainPageState extends State<MainPage> {
                   child: Center(
                       child: Column(
                     children: [
-                      Text('+${i++}',
+                      Text(
+                          DateFormat.Hm().add_E().format(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  hourlyInfo.date * 1000)),
                           style: const TextStyle(
                               color: Color(0xFFf8f8f2), fontSize: 20)),
                       Image.network(
