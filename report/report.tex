@@ -64,7 +64,7 @@
 			\textbf{Weather}
 			
 			\huge
-			Relatório Técnico
+			Relatório
 			
 			\vspace{2cm}
 			
@@ -98,14 +98,27 @@
 	
 	
 	\large
+	\section{Funcionamento Geral da Aplicação}
+	\normalsize
+	
+	A primeira vez que a aplicação é aberta após ter sido instalada esta, por defeito, faz um pedido implícito de modo a ter dados para preencher inicialmente o ecrã. Após isto, sempre que é aberta, esta preenche o ecrã com a informação armazenada localmente nas \textbf{shared preferences}.
+	
+	Para atualizar os dados, o utilizador tem de pressionar o botão de refresh que se encontra no canto superior direito.
+	
+	
+	\large
 	\section{API Escolhida}
 	\normalsize
 	
 	A API que escolhemos para a realização deste trabalho foi \color{blue}\underline{\href{https://openweathermap.org/}{OpenWeatherMap}}\color{black}. Achamos que esta fornece bastante informação e, ao ler reviews online, chegámos também à conclusão que é das que tem mais precisão em relação às previsões.
 	
-	Para além disto, esta tem também um elevado limite de pedidos para a versão gratuita, podendo fazer até 60 pedidos por segundo ou 1,000,000 de pedidos por mês.
+	Para além disto, esta tem também um elevado limite de pedidos para a versão gratuita, podendo fazer até 60 pedidos por minuto ou 1,000,000 de pedidos por mês.
 	
 	Apesar de fornecer informação para minuto, decidimos ignorar porque não era detalhada o suficiente para ser útil para o utilizador normal.
+	
+	Para além de usar a API para obter previsões metereológicas, também a usamos para obter o nome da cidade associada às coordenadas.
+	
+	Por fim, esta API também nos fornece um pacote de ícones relativo às previsões metereológicas. Para cada previsão vem associado um campo \textbf{icon} que contém um ID para uma imagem que, para obter, basta usar um link fornecido por eles.
 	
 	
 	\large
@@ -131,6 +144,10 @@
 	A nossa interface foi inspirada \color{blue}\underline{\href{https://search.muz.li/OThiNGFlMTE2}{nesta interface}}\color{black}. Apesar de termos inicialmente baseado nessa, consideramos que a nossa interface se tornou única e com a sua própria personalidade com o decorrer do projeto.
 	
 	O objetivo era ter uma interface minimalista mas que não falhasse a apresentar informação ao utilizador.
+	
+	O ecrã de detalhe só está disponível para as previsões diárias por acharmos que, para o utilizador comum, não é necessário obter informações mais detalhadas para as previsões por hora. Deste modo mantemos a aplicação minimalista.
+	
+	Para mostrar as inúmeras previsões futuras, sejam as diárias ou as por hora, usámos uma ListView com scroll horizontal por acharmos que é o que mais se adequa ao layout da aplicação, ao invés de seguir a estratégia usada pelo exemplo que nos inspirou de ter uma segunda página para listar mais para além daquelas que aparecem no ecrã.
 
 
 	\large
