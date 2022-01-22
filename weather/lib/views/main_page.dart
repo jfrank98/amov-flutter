@@ -114,7 +114,7 @@ class _MainPageState extends State<MainPage> {
       Map<String, dynamic> json) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('weatherData', jsonEncode(json));
-    preferences.setString('city', city!);
+    preferences.setString('city', city ?? '');
   }
 
   void _updateWeatherData() async {

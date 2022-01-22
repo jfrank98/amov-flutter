@@ -1,14 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:geocoding/geocoding.dart';
-import 'package:location/location.dart';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:weather/models/weather_data.dart';
 import 'package:weather/models/weather_info.dart';
-import '../requests.dart';
-import 'dart:developer' as developer;
 
 class WeatherAPI {
   static Future<Map<String, dynamic>> fetchWeatherData(
@@ -53,9 +46,12 @@ class WeatherAPI {
 
   static Future<String?> getLocationFromCoordinates(
       double lat, double lon) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
-    Placemark place = placemarks[0];
-    return place.locality;
+    final response = await http.get(Uri.parse(
+        "http://api.openweathermap.org/geo/1.0/reverse?lat=$lat&lon=$lon&limit=10&appid=${dotenv.env['API_KEY']}"));
+
+    final data = jsonDecode(response.body);
+
+    return data[0]['name'];
   }
 
   static getUrlForIcon(String iconId) {
