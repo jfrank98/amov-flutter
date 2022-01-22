@@ -10,5 +10,10 @@
     "pageMinTemp": "Temperature mínima: {minTemp}",
     "pageRefreshWeatherData": "Atualizar",
     "pageDaily": "Diariamente",
-    "pageHourly": "Por hora"
+    "pageHourly": "Por hora",
+    "pageReturnToMain": "Voltar à página principal",
+    "pageSunrise": "Nasecer do sol: {sunrise}",
+    "pageSunset": "Pôr do sol: {sunset}",
+    "pageMoonrise": "Nascer da lua: {moonrise}",
+    "pageMoonset": "Pôr da lua: {moonset}"
 }

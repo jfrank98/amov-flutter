@@ -10,5 +10,10 @@
     "pageMinTemp": "Min. temperature: {minTemp}",
     "pageRefreshWeatherData": "Refresh",
     "pageDaily": "Daily",
-    "pageHourly": "Hourly"
+    "pageHourly": "Hourly",
+    "pageReturnToMain": "Return to main page",
+    "pageSunrise": "Sunrise: {sunrise}",
+    "pageSunset": "Sunset: {sunset}",
+    "pageMoonrise": "Moonrise: {moonrise}",
+    "pageMoonset": "Moonset: {moonset}"
 }

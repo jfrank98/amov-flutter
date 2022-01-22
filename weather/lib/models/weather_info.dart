@@ -5,6 +5,8 @@ class WeatherInfo {
   final double windSpeed;
   final int sunriseTime;
   final int sunsetTime;
+  final int moonrise;
+  final int moonset;
   final double feelsLike;
   final int clouds;
   final String weather;
@@ -18,7 +20,9 @@ class WeatherInfo {
   final String iconId;
 
   WeatherInfo(
-      {required this.iconId,
+      {required this.moonrise,
+      required this.moonset,
+      required this.iconId,
       required this.maxTemp,
       required this.minTemp,
       required this.temp,
@@ -43,19 +47,27 @@ class WeatherInfo {
         precipitation = 0.0,
         sunrise = 0,
         sunset = 0,
-        visibility = 0;
+        visibility = 0,
+        moonrise = 0,
+        moonset = 0;
 
     temperature = json['temp'];
     feelsLikeTemp = json['feels_like'];
     maxTemperature = originalJSON['daily'][0]['temp']['max'];
     minTemperature = originalJSON['daily'][0]['temp']['min'];
     if (hourly) {
+      sunrise = 0;
+      sunset = 0;
       precipitation = json['pop'].toDouble();
     } else if (daily) {
       temperature = json['temp']['day'];
       feelsLikeTemp = json['feels_like']['day'];
       maxTemperature = json['temp']['max'];
       minTemperature = json['temp']['min'];
+      moonrise = json['moonrise'];
+      moonset = json['moonset'];
+      sunrise = json['sunrise'];
+      sunset = json['sunset'];
     } else {
       sunrise = json['sunrise'];
       sunset = json['sunset'];
@@ -72,6 +84,8 @@ class WeatherInfo {
         windSpeed: json['wind_speed'].toDouble(),
         sunriseTime: sunrise,
         sunsetTime: sunset,
+        moonrise: moonrise,
+        moonset: moonset,
         clouds: json['clouds'],
         weather: json['weather'][0]['main'],
         humidity: json['humidity'],

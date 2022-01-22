@@ -179,6 +179,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Return to main page`
+  String get pageReturnToMain {
+    return Intl.message(
+      'Return to main page',
+      name: 'pageReturnToMain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sunrise: {sunrise}`
+  String pageSunrise(Object sunrise) {
+    return Intl.message(
+      'Sunrise: $sunrise',
+      name: 'pageSunrise',
+      desc: '',
+      args: [sunrise],
+    );
+  }
+
+  /// `Sunset: {sunset}`
+  String pageSunset(Object sunset) {
+    return Intl.message(
+      'Sunset: $sunset',
+      name: 'pageSunset',
+      desc: '',
+      args: [sunset],
+    );
+  }
+
+  /// `Moonrise: {moonrise}`
+  String pageMoonrise(Object moonrise) {
+    return Intl.message(
+      'Moonrise: $moonrise',
+      name: 'pageMoonrise',
+      desc: '',
+      args: [moonrise],
+    );
+  }
+
+  /// `Moonset: {moonset}`
+  String pageMoonset(Object moonset) {
+    return Intl.message(
+      'Moonset: $moonset',
+      name: 'pageMoonset',
+      desc: '',
+      args: [moonset],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -39,8 +39,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(minTemp) => "Temperature mínima: ${minTemp}";
 
-  static String m7(howMany) =>
+  static String m7(moonrise) => "Nascer da lua: ${moonrise}";
+
+  static String m8(moonset) => "Pôr da lua: ${moonset}";
+
+  static String m9(howMany) =>
       "${Intl.plural(howMany, one: '1 mensagem', other: '${howMany} mensagens')}";
+
+  static String m10(sunrise) => "Nasecer do sol: ${sunrise}";
+
+  static String m11(sunset) => "Pôr do sol: ${sunset}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -54,8 +62,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "pageHourly": MessageLookupByLibrary.simpleMessage("Por hora"),
         "pageMaxTemp": m5,
         "pageMinTemp": m6,
-        "pageNotificationsCount": m7,
+        "pageMoonrise": m7,
+        "pageMoonset": m8,
+        "pageNotificationsCount": m9,
         "pageRefreshWeatherData":
-            MessageLookupByLibrary.simpleMessage("Atualizar")
+            MessageLookupByLibrary.simpleMessage("Atualizar"),
+        "pageReturnToMain":
+            MessageLookupByLibrary.simpleMessage("Voltar à página principal"),
+        "pageSunrise": m10,
+        "pageSunset": m11
       };
 }

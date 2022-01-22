@@ -11,6 +11,8 @@ import 'package:weather/providers/weather_api.dart';
 
 import 'dart:developer' as developer;
 
+import 'package:weather/views/details_page.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -50,17 +52,6 @@ class _MainPageState extends State<MainPage> {
     }));
   }
 
-  Future<void> _getLocationFromCoordinates() async {
-    List<Geocoding.Placemark> placemarks =
-        await Geocoding.placemarkFromCoordinates(
-            _locationData!.latitude!, _locationData!.longitude!);
-    Geocoding.Placemark place = placemarks[0];
-    setState(() {
-      city = '${place.locality}';
-      developer.log("assssssss ${place.locality}");
-    });
-  }
-
   Future<void> _fetchLocation() async {
     // Verificar estado do serviço
     _serviceEnabled = await location.serviceEnabled();
@@ -76,7 +67,8 @@ class _MainPageState extends State<MainPage> {
 
     await _getCoordinates();
     setState(() {});
-    await _getLocationFromCoordinates();
+    city = await WeatherAPI.getLocationFromCoordinates(
+        _locationData?.latitude ?? 0, _locationData?.longitude ?? 0);
   }
 
   Future<void> _getCoordinates() async {
@@ -142,8 +134,7 @@ class _MainPageState extends State<MainPage> {
           .format(DateTime.fromMillisecondsSinceEpoch(current.date * 1000));
       feelsLike = current.feelsLike;
       currentTemperature = current.temp;
-      maxTemp = current.maxTemp;
-      minTemp = current.minTemp;
+
       weatherMain = current.weather;
       imageUrl = WeatherAPI.getUrlForIcon(current.iconId);
       developer.log("aferg ${json['lat']} ${json['lon']}");
@@ -158,44 +149,56 @@ class _MainPageState extends State<MainPage> {
     switch (requestedForecast) {
       case FORECAST_TYPE.DAILY:
         var i = 1;
-        for (var dailyInfo in daily) {
-          widgetList.add(Container(
-              margin: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                        offset: Offset.zero,
-                        blurRadius: 6,
-                        blurStyle: BlurStyle.outer)
-                  ],
-                  gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0xFFbd93f9), Color(0x69bd93f9)]),
-                  //color: const Color(0x69bd93f9),
-                  border: Border.all(
-                      color: const Color(0xFFf8f8f2), style: BorderStyle.none),
-                  borderRadius: const BorderRadius.all(Radius.circular(20))),
-              child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Center(
-                      child: Column(
-                    children: [
-                      Text(
-                          DateFormat.E().format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                  dailyInfo.date * 1000)),
-                          style: const TextStyle(
-                              color: Color(0xFFf8f8f2), fontSize: 20)),
-                      Image.network(
-                        WeatherAPI.getUrlForIcon(dailyInfo.iconId),
-                        scale: 2,
-                      ),
-                      Text('${dailyInfo.temp} °C',
-                          style: const TextStyle(
-                              color: Color(0xFFf8f8f2), fontSize: 20)),
-                    ],
-                  )))));
+        for (WeatherInfo dailyInfo in daily) {
+          widgetList.add(InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => DetailsPage(
+                              selectedWeatherInfo: dailyInfo,
+                              city: city,
+                            )));
+              },
+              child: Container(
+                  margin: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                            offset: Offset.zero,
+                            blurRadius: 6,
+                            blurStyle: BlurStyle.outer)
+                      ],
+                      gradient: const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Color(0xFFbd93f9), Color(0x69bd93f9)]),
+                      //color: const Color(0x69bd93f9),
+                      border: Border.all(
+                          color: const Color(0xFFf8f8f2),
+                          style: BorderStyle.none),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
+                  child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Center(
+                          child: Column(
+                        children: [
+                          Text(
+                              DateFormat.E().format(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      dailyInfo.date * 1000)),
+                              style: const TextStyle(
+                                  color: Color(0xFFf8f8f2), fontSize: 20)),
+                          Image.network(
+                            WeatherAPI.getUrlForIcon(dailyInfo.iconId),
+                            scale: 2,
+                          ),
+                          Text('${dailyInfo.temp.round()} °C',
+                              style: const TextStyle(
+                                  color: Color(0xFFf8f8f2), fontSize: 20)),
+                        ],
+                      ))))));
         }
 
         break;
@@ -233,7 +236,7 @@ class _MainPageState extends State<MainPage> {
                         WeatherAPI.getUrlForIcon(hourlyInfo.iconId),
                         scale: 2,
                       ),
-                      Text('${hourlyInfo.temp} °C',
+                      Text('${hourlyInfo.temp.round()} °C',
                           style: const TextStyle(
                               color: Color(0xFFf8f8f2), fontSize: 20)),
                     ],
@@ -264,12 +267,12 @@ class _MainPageState extends State<MainPage> {
       ),
       body: Container(
           padding: const EdgeInsets.only(top: 20),
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFF282a36), Color(0xFF282a36)])),
-          //colors: [Color(0x69282a36), Color(0xFF282a36)])),
+          // decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //         begin: Alignment.topCenter,
+          //         end: Alignment.bottomCenter,
+          //         colors: [Color(0xFF282a36), Color(0xFF282a36)])),
+          color: const Color(0xFF282a36),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 40),
@@ -279,7 +282,7 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    city!,
+                    city ?? '',
                     style: const TextStyle(
                         fontSize: 40,
                         color: Color(0xffff79c6),
@@ -320,15 +323,11 @@ class _MainPageState extends State<MainPage> {
                               "${currentTemperature.round()}°C",
                               style: textStyle,
                             ),
-                            // S.of(context).pageCurrentTemperature(
-                            // Text(
-                            //   "${S.of(context).pageFeelsLike(feelsLike.round())}°C",
-                            //   style: textStyle,
-                            // ),
-                            // Text("${S.of(context).pageMaxTemp(maxTemp.round())}°C",
-                            //     style: textStyle),
-                            // Text("${S.of(context).pageMinTemp(minTemp.round())}°C",
-                            //     style: textStyle),
+                            Text(
+                              '${S.of(context).pageFeelsLike(feelsLike.round())}°C',
+                              style: const TextStyle(
+                                  color: Color(0xfff8f8f2), fontSize: 25),
+                            ),
                             Text(date,
                                 style: const TextStyle(
                                     fontSize: 25, color: Color(0xfff8f8f2)))
@@ -344,7 +343,6 @@ class _MainPageState extends State<MainPage> {
                         decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             color: Color(0x69bd93f9)),
-                        //color: const Color(0xFFbd93f9),
                         child: ToggleButtons(
                             fillColor: const Color(0x69bd93f9),
                             selectedColor: const Color(0xFF000000),
@@ -367,13 +365,12 @@ class _MainPageState extends State<MainPage> {
                                     isSelected[buttonIndex] = false;
                                   }
                                 }
-                                setState(() {
-                                  if (index == 0) {
-                                    requestedForecast = FORECAST_TYPE.HOURLY;
-                                  } else {
-                                    requestedForecast = FORECAST_TYPE.DAILY;
-                                  }
-                                });
+
+                                if (index == 0) {
+                                  requestedForecast = FORECAST_TYPE.HOURLY;
+                                } else {
+                                  requestedForecast = FORECAST_TYPE.DAILY;
+                                }
                               });
                             },
                             children: [
@@ -386,30 +383,6 @@ class _MainPageState extends State<MainPage> {
                             ],
                             isSelected: isSelected),
                       ),
-                      // TextButton(
-                      //   onPressed: () => setState(() {
-                      //     requestedForecast = FORECAST_TYPE.HOURLY;
-                      //   }),
-                      //   child: Text(S.of(context).pageHourly,
-                      //       style: const TextStyle(
-                      //           color: Color(0xfff8f8f2), fontSize: 25)),
-                      //   style: ButtonStyle(
-                      //       backgroundColor: MaterialStateProperty.all(
-                      //           const Color(0xFF424450))),
-                      // ),
-                      // TextButton(
-                      //   onPressed: () => setState(() {
-                      //     requestedForecast = FORECAST_TYPE.DAILY;
-                      //   }),
-                      //   child: Text(
-                      //     S.of(context).pageDaily,
-                      //     style: const TextStyle(
-                      //         color: Color(0xfff8f8f2), fontSize: 25),
-                      //   ),
-                      //   style: ButtonStyle(
-                      //       backgroundColor: MaterialStateProperty.all(
-                      //           const Color(0xFF424450))),
-                      // ),
                     ],
                   ),
                   SizedBox(
@@ -420,6 +393,12 @@ class _MainPageState extends State<MainPage> {
                       children: _getChildrenForHorizontalWeather(),
                     ),
                   ),
+                  // GestureDetector(
+                  //     onVerticalDragUpdate: (DragUpdateDetails details) => {
+                  //           if (details.delta.dy >=
+                  //               MediaQuery.of(context).size.height * 0.3)
+                  //             {_updateWeatherData()}
+                  //         })
                 ],
               ),
             ),

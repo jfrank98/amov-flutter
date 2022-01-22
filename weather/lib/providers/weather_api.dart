@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:geocoding/geocoding.dart';
 import 'package:location/location.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -48,6 +49,13 @@ class WeatherAPI {
     }
 
     return returnArray;
+  }
+
+  static Future<String?> getLocationFromCoordinates(
+      double lat, double lon) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+    Placemark place = placemarks[0];
+    return place.locality;
   }
 
   static getUrlForIcon(String iconId) {
