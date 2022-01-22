@@ -149,6 +149,36 @@ class S {
       args: [minTemp],
     );
   }
+
+  /// `Refresh`
+  String get pageRefreshWeatherData {
+    return Intl.message(
+      'Refresh',
+      name: 'pageRefreshWeatherData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily`
+  String get pageDaily {
+    return Intl.message(
+      'Daily',
+      name: 'pageDaily',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hourly`
+  String get pageHourly {
+    return Intl.message(
+      'Hourly',
+      name: 'pageHourly',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

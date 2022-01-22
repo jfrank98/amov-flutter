@@ -45,13 +45,17 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "pageCurrentTemperature": m0,
+        "pageDaily": MessageLookupByLibrary.simpleMessage("Diariamente"),
         "pageFeelsLike": m1,
         "pageHomeConfirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
         "pageHomeWelcome": m2,
         "pageHomeWelcomeGender": m3,
         "pageHomeWelcomeRole": m4,
+        "pageHourly": MessageLookupByLibrary.simpleMessage("Por hora"),
         "pageMaxTemp": m5,
         "pageMinTemp": m6,
-        "pageNotificationsCount": m7
+        "pageNotificationsCount": m7,
+        "pageRefreshWeatherData":
+            MessageLookupByLibrary.simpleMessage("Atualizar")
       };
 }

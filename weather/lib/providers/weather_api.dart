@@ -29,7 +29,7 @@ class WeatherAPI {
   static Future<List<WeatherInfo>> parseHourlyWeatherData(
       Map<String, dynamic> json) async {
     var hourlyArray = json['hourly'];
-    List<WeatherInfo> returnArray = List.empty();
+    List<WeatherInfo> returnArray = [];
 
     for (var hourly in hourlyArray) {
       returnArray.add(WeatherInfo.fromJson(json, hourly, false, true));

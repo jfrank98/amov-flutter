@@ -40,22 +40,26 @@ class WeatherInfo {
         maxTemperature,
         minTemperature,
         feelsLikeTemp,
-        precipitation = 0.0;
+        precipitation = 0.0,
+        sunrise = 0,
+        sunset = 0,
+        visibility = 0;
 
+    temperature = json['temp'];
     feelsLikeTemp = json['feels_like'];
-
+    maxTemperature = originalJSON['daily'][0]['temp']['max'];
+    minTemperature = originalJSON['daily'][0]['temp']['min'];
     if (hourly) {
-      precipitation = json['pop'];
+      precipitation = json['pop'].toDouble();
     } else if (daily) {
       temperature = json['temp']['day'];
       feelsLikeTemp = json['feels_like']['day'];
       maxTemperature = json['temp']['max'];
       minTemperature = json['temp']['min'];
     } else {
-      temperature = json['temp'];
+      sunrise = json['sunrise'];
+      sunset = json['sunset'];
       precipitation = originalJSON['hourly'][0]['pop'].toDouble();
-      maxTemperature = originalJSON['daily'][0]['temp']['max'];
-      minTemperature = originalJSON['daily'][0]['temp']['min'];
     }
 
     return WeatherInfo(
@@ -66,13 +70,13 @@ class WeatherInfo {
         feelsLike: feelsLikeTemp.toDouble(),
         date: json['dt'],
         windSpeed: json['wind_speed'].toDouble(),
-        sunriseTime: json['sunrise'],
-        sunsetTime: json['sunset'],
+        sunriseTime: sunrise,
+        sunsetTime: sunset,
         clouds: json['clouds'],
         weather: json['weather'][0]['main'],
         humidity: json['humidity'],
         uvi: json['uvi'].toDouble(),
-        visibility: json['visibility'],
+        visibility: visibility,
         precipitation: precipitation);
   }
 

@@ -7,6 +7,8 @@
     "pageCurrentTemperature": "Temperature atual: {temp}",
     "pageFeelsLike": "Parecem: {feelsLike}",
     "pageMaxTemp": "Temperatura máxima: {maxTemp}",
-    "pageMinTemp": "Temperature mínima: {minTemp}"
-    
+    "pageMinTemp": "Temperature mínima: {minTemp}",
+    "pageRefreshWeatherData": "Atualizar",
+    "pageDaily": "Diariamente",
+    "pageHourly": "Por hora"
 }
