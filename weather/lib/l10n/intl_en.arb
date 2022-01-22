@@ -1,0 +1,21 @@
+{
+    "pageHomeConfirm": "Confirm",
+    "pageHomeWelcome": "Welcome {name}",
+    "pageHomeWelcomeGender": "{gender, select, male {Hi man!} female {Hi woman!} other {Hi there!}}",
+    "pageHomeWelcomeRole": "{role, select, admin {Hi admin!} manager {Hi manager!} other {Hi visitor!}}",
+    "pageNotificationsCount": "{howMany, plural, one{1 message} other{{howMany} messages}}",
+    "pageCurrentTemperature": "Current temperature: {temp}",
+    "pageFeelsLike": "Feels like: {feelsLike}",
+    "pageMaxTemp": "Max. temperature: {maxTemp}",
+    "pageMinTemp": "Min. temperature: {minTemp}",
+    "pageRefreshWeatherData": "Refresh",
+    "pageDaily": "Daily",
+    "pageHourly": "Hourly",
+    "pageReturnToMain": "Return to main page",
+    "pageSunrise": "Sunrise: {sunrise}",
+    "pageSunset": "Sunset: {sunset}",
+    "pageMoonrise": "Moonrise: {moonrise}",
+    "pageMoonset": "Moonset: {moonset}",
+    "pageLastUpdate": "Last updated: {updateTime}",
+    "pageForecastTime": "Forecast time: {forecast}"
+}
