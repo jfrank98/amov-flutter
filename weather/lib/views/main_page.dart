@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:geocoding/geocoding.dart' as Geocoding;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
@@ -25,6 +26,7 @@ class _MainPageState extends State<MainPage> {
   List<bool> isSelected = [false, true];
   String date = '', weatherMain = '';
   String imageUrl = '';
+  String? city = '';
 
   late WeatherInfo current;
   List<WeatherInfo> hourly = List.empty();
@@ -48,6 +50,17 @@ class _MainPageState extends State<MainPage> {
     }));
   }
 
+  Future<void> _getLocationFromCoordinates() async {
+    List<Geocoding.Placemark> placemarks =
+        await Geocoding.placemarkFromCoordinates(
+            _locationData!.latitude!, _locationData!.longitude!);
+    Geocoding.Placemark place = placemarks[0];
+    setState(() {
+      city = '${place.locality}';
+      developer.log("assssssss ${place.locality}");
+    });
+  }
+
   Future<void> _fetchLocation() async {
     // Verificar estado do serviço
     _serviceEnabled = await location.serviceEnabled();
@@ -63,7 +76,7 @@ class _MainPageState extends State<MainPage> {
 
     await _getCoordinates();
     setState(() {});
-    developer.log("${_locationData!.latitude} ${_locationData!.longitude}");
+    await _getLocationFromCoordinates();
   }
 
   Future<void> _getCoordinates() async {
@@ -76,16 +89,18 @@ class _MainPageState extends State<MainPage> {
 
     Map<String, dynamic> weatherData;
     String? weatherDataStr = preferences.getString('weatherData');
+    city = preferences.getString('city');
 
-    if (weatherDataStr == null) {
+    if (weatherDataStr == null || city == null) {
       await _fetchLocation();
+
       var json = await WeatherAPI.fetchWeatherData(
           _locationData?.latitude, _locationData?.longitude);
 
       await _updateDataFromSharedPreferences(json);
       weatherDataStr = preferences.getString('weatherData');
+      city = preferences.getString('city');
     }
-
     weatherData = jsonDecode(weatherDataStr!) as Map<String, dynamic>;
 
     current = await WeatherAPI.parseCurrentWeatherData(weatherData);
@@ -108,6 +123,7 @@ class _MainPageState extends State<MainPage> {
       Map<String, dynamic> json) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('weatherData', jsonEncode(json));
+    preferences.setString('city', city!);
   }
 
   void _updateWeatherData() async {
@@ -118,6 +134,8 @@ class _MainPageState extends State<MainPage> {
     current = await WeatherAPI.parseCurrentWeatherData(json);
     hourly = await WeatherAPI.parseHourlyWeatherData(json);
     daily = await WeatherAPI.parseDailyWeatherData(json);
+
+    //await _getLocationFromCoordinates();
 
     setState(() {
       date = DateFormat.Hms()
@@ -255,9 +273,9 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '${_locationData?.latitude}, ${_locationData?.longitude}',
+                    city!,
                     style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 40,
                         color: Color(0xffff79c6),
                         fontWeight: FontWeight.bold),
                   ),
