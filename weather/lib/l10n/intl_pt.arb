@@ -15,5 +15,7 @@
     "pageSunrise": "Nasecer do sol: {sunrise}",
     "pageSunset": "Pôr do sol: {sunset}",
     "pageMoonrise": "Nascer da lua: {moonrise}",
-    "pageMoonset": "Pôr da lua: {moonset}"
+    "pageMoonset": "Pôr da lua: {moonset}",
+    "pageLastUpdate": "Last updated: {updateTime}",
+    "pageForecastTime": "Forecast time: {forecast}"
 }

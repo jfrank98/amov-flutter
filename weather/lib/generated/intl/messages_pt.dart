@@ -24,52 +24,58 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(feelsLike) => "Parecem: ${feelsLike}";
 
-  static String m2(name) => "Bem vindo ${name}";
+  static String m2(forecast) => "Forecast time: ${forecast}";
 
-  static String m3(gender) =>
+  static String m3(name) => "Bem vindo ${name}";
+
+  static String m4(gender) =>
       "${Intl.gender(gender, female: 'Boas mana!', male: 'Boas mano!', other: 'Boas pessoa!')}";
 
-  static String m4(role) => "${Intl.select(role, {
+  static String m5(role) => "${Intl.select(role, {
             'admin': 'Boas admin!',
             'manager': 'Boas gestor!',
             'other': 'Boas visitante!',
           })}";
 
-  static String m5(maxTemp) => "Temperatura máxima: ${maxTemp}";
+  static String m6(updateTime) => "Last updated: ${updateTime}";
 
-  static String m6(minTemp) => "Temperature mínima: ${minTemp}";
+  static String m7(maxTemp) => "Temperatura máxima: ${maxTemp}";
 
-  static String m7(moonrise) => "Nascer da lua: ${moonrise}";
+  static String m8(minTemp) => "Temperature mínima: ${minTemp}";
 
-  static String m8(moonset) => "Pôr da lua: ${moonset}";
+  static String m9(moonrise) => "Nascer da lua: ${moonrise}";
 
-  static String m9(howMany) =>
+  static String m10(moonset) => "Pôr da lua: ${moonset}";
+
+  static String m11(howMany) =>
       "${Intl.plural(howMany, one: '1 mensagem', other: '${howMany} mensagens')}";
 
-  static String m10(sunrise) => "Nasecer do sol: ${sunrise}";
+  static String m12(sunrise) => "Nasecer do sol: ${sunrise}";
 
-  static String m11(sunset) => "Pôr do sol: ${sunset}";
+  static String m13(sunset) => "Pôr do sol: ${sunset}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "pageCurrentTemperature": m0,
         "pageDaily": MessageLookupByLibrary.simpleMessage("Diariamente"),
         "pageFeelsLike": m1,
+        "pageForecastTime": m2,
         "pageHomeConfirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
-        "pageHomeWelcome": m2,
-        "pageHomeWelcomeGender": m3,
-        "pageHomeWelcomeRole": m4,
+        "pageHomeWelcome": m3,
+        "pageHomeWelcomeGender": m4,
+        "pageHomeWelcomeRole": m5,
         "pageHourly": MessageLookupByLibrary.simpleMessage("Por hora"),
-        "pageMaxTemp": m5,
-        "pageMinTemp": m6,
-        "pageMoonrise": m7,
-        "pageMoonset": m8,
-        "pageNotificationsCount": m9,
+        "pageLastUpdate": m6,
+        "pageMaxTemp": m7,
+        "pageMinTemp": m8,
+        "pageMoonrise": m9,
+        "pageMoonset": m10,
+        "pageNotificationsCount": m11,
         "pageRefreshWeatherData":
             MessageLookupByLibrary.simpleMessage("Atualizar"),
         "pageReturnToMain":
             MessageLookupByLibrary.simpleMessage("Voltar à página principal"),
-        "pageSunrise": m10,
-        "pageSunset": m11
+        "pageSunrise": m12,
+        "pageSunset": m13
       };
 }

@@ -229,6 +229,26 @@ class S {
       args: [moonset],
     );
   }
+
+  /// `Last updated: {updateTime}`
+  String pageLastUpdate(Object updateTime) {
+    return Intl.message(
+      'Last updated: $updateTime',
+      name: 'pageLastUpdate',
+      desc: '',
+      args: [updateTime],
+    );
+  }
+
+  /// `Forecast time: {forecast}`
+  String pageForecastTime(Object forecast) {
+    return Intl.message(
+      'Forecast time: $forecast',
+      name: 'pageForecastTime',
+      desc: '',
+      args: [forecast],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

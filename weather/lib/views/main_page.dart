@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:geocoding/geocoding.dart' as Geocoding;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
@@ -127,8 +126,6 @@ class _MainPageState extends State<MainPage> {
     hourly = await WeatherAPI.parseHourlyWeatherData(json);
     daily = await WeatherAPI.parseDailyWeatherData(json);
 
-    //await _getLocationFromCoordinates();
-
     setState(() {
       date = DateFormat.Hms()
           .format(DateTime.fromMillisecondsSinceEpoch(current.date * 1000));
@@ -160,6 +157,7 @@ class _MainPageState extends State<MainPage> {
                               city: city,
                             )));
               },
+              //splashColor: const Color(0xFF000000),
               child: Container(
                   margin: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
@@ -253,8 +251,6 @@ class _MainPageState extends State<MainPage> {
     const textStyle = TextStyle(fontSize: 30, color: Color(0xfff8f8f2));
 
     return Scaffold(
-      //const Color(0xFF282a36)
-      //backgroundColor: Colors.transparent,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -267,11 +263,6 @@ class _MainPageState extends State<MainPage> {
       ),
       body: Container(
           padding: const EdgeInsets.only(top: 20),
-          // decoration: const BoxDecoration(
-          //     gradient: LinearGradient(
-          //         begin: Alignment.topCenter,
-          //         end: Alignment.bottomCenter,
-          //         colors: [Color(0xFF282a36), Color(0xFF282a36)])),
           color: const Color(0xFF282a36),
           child: Center(
             child: Padding(
@@ -328,77 +319,110 @@ class _MainPageState extends State<MainPage> {
                               style: const TextStyle(
                                   color: Color(0xfff8f8f2), fontSize: 25),
                             ),
-                            Text(date,
+                            Text(S.of(context).pageLastUpdate(date),
                                 style: const TextStyle(
                                     fontSize: 25, color: Color(0xfff8f8f2)))
                           ],
                         )),
                   ),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    buttonMinWidth: 20,
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Color(0x69bd93f9)),
-                        child: ToggleButtons(
-                            fillColor: const Color(0x69bd93f9),
-                            selectedColor: const Color(0xFF000000),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
-                            textStyle: const TextStyle(fontSize: 20),
-                            constraints: const BoxConstraints(
-                                minWidth: 70,
-                                maxWidth: 200,
-                                minHeight: 30,
-                                maxHeight: 100),
-                            onPressed: (index) {
-                              setState(() {
-                                for (int buttonIndex = 0;
-                                    buttonIndex < isSelected.length;
-                                    buttonIndex++) {
-                                  if (buttonIndex == index) {
-                                    isSelected[buttonIndex] = true;
-                                  } else {
-                                    isSelected[buttonIndex] = false;
-                                  }
-                                }
-
-                                if (index == 0) {
-                                  requestedForecast = FORECAST_TYPE.HOURLY;
-                                } else {
-                                  requestedForecast = FORECAST_TYPE.DAILY;
-                                }
-                              });
-                            },
-                            children: [
-                              Text(
-                                S.of(context).pageHourly,
-                              ),
-                              Text(
-                                S.of(context).pageDaily,
-                              )
-                            ],
-                            isSelected: isSelected),
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Color(0xAA44475a),
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset.zero,
+                              blurRadius: 10,
+                              blurStyle: BlurStyle.outer)
+                        ],
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 140,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: _getChildrenForHorizontalWeather(),
-                    ),
-                  ),
-                  // GestureDetector(
-                  //     onVerticalDragUpdate: (DragUpdateDetails details) => {
-                  //           if (details.delta.dy >=
-                  //               MediaQuery.of(context).size.height * 0.3)
-                  //             {_updateWeatherData()}
-                  //         })
+                      child: Column(
+                        children: [
+                          ButtonBar(
+                            alignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            buttonMinWidth: 20,
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    color: Color(0x69bd93f9)),
+                                child: ToggleButtons(
+                                    fillColor: const Color(0x69bd93f9),
+                                    selectedColor: const Color(0xFF000000),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    textStyle: const TextStyle(fontSize: 20),
+                                    constraints: const BoxConstraints(
+                                        minWidth: 70,
+                                        maxWidth: 200,
+                                        minHeight: 30,
+                                        maxHeight: 100),
+                                    onPressed: (index) {
+                                      setState(() {
+                                        for (int buttonIndex = 0;
+                                            buttonIndex < isSelected.length;
+                                            buttonIndex++) {
+                                          if (buttonIndex == index) {
+                                            isSelected[buttonIndex] = true;
+                                          } else {
+                                            isSelected[buttonIndex] = false;
+                                          }
+                                        }
+
+                                        if (index == 0) {
+                                          requestedForecast =
+                                              FORECAST_TYPE.HOURLY;
+                                        } else {
+                                          requestedForecast =
+                                              FORECAST_TYPE.DAILY;
+                                        }
+                                      });
+                                    },
+                                    children: [
+                                      Text(
+                                        S.of(context).pageHourly,
+                                      ),
+                                      Text(
+                                        S.of(context).pageDaily,
+                                      )
+                                    ],
+                                    isSelected: isSelected),
+                              ),
+                            ],
+                          ),
+                          ShaderMask(
+                            shaderCallback: (Rect rect) {
+                              return const LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Colors.purple,
+                                        Colors.transparent,
+                                        Colors.transparent,
+                                        Colors.purple,
+                                      ],
+                                      stops: [0.0, 0.1, 0.9, 1.0],
+                                      tileMode: TileMode
+                                          .mirror // 10% purple, 80% transparent, 10% purple
+                                      )
+                                  .createShader(rect);
+                            },
+                            blendMode: BlendMode.dstOut,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 140,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: _getChildrenForHorizontalWeather(),
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
                 ],
               ),
             ),

@@ -15,5 +15,7 @@
     "pageSunrise": "Sunrise: {sunrise}",
     "pageSunset": "Sunset: {sunset}",
     "pageMoonrise": "Moonrise: {moonrise}",
-    "pageMoonset": "Moonset: {moonset}"
+    "pageMoonset": "Moonset: {moonset}",
+    "pageLastUpdate": "Last updated: {updateTime}",
+    "pageForecastTime": "Forecast time: {forecast}"
 }

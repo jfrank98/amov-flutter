@@ -72,19 +72,12 @@ class DetailsPage extends StatelessWidget {
                                 "${selectedWeatherInfo.temp.round()}°C",
                                 style: textStyle,
                               ),
-                              // S.of(context).pageCurrentTemperature(
-                              // Text(
-                              //   "${S.of(context).pageFeelsLike(feelsLike.round())}°C",
-                              //   style: textStyle,
-                              // ),
-                              // Text("${S.of(context).pageMaxTemp(maxTemp.round())}°C",
-                              //     style: textStyle),
-                              // Text("${S.of(context).pageMinTemp(minTemp.round())}°C",
-                              //     style: textStyle),
                               Text(
-                                  DateFormat.Hms().format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          selectedWeatherInfo.date * 1000)),
+                                  S.of(context).pageForecastTime(
+                                      DateFormat.Hms().format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              selectedWeatherInfo.date *
+                                                  1000))),
                                   style: const TextStyle(
                                       fontSize: 25, color: Color(0xfff8f8f2)))
                             ],
@@ -192,7 +185,3 @@ class DetailsPage extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(20)));
   }
 }
-
-// class _DetailsPageState extends State<DetailsPage> {
-  
-// }
