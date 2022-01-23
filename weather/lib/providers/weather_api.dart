@@ -54,6 +54,54 @@ class WeatherAPI {
     return data[0]['name'];
   }
 
+  static String getWeatherPT(String weatherMain) {
+    switch (weatherMain) {
+      case 'Clouds':
+        weatherMain = 'Nublado';
+        break;
+      case 'Rain':
+        weatherMain = 'Chuva';
+        break;
+      case 'Drizzle':
+        weatherMain = 'Chuvisco';
+        break;
+      case 'Thunderstorm':
+        weatherMain = 'Trovoada';
+        break;
+      case 'Snow':
+        weatherMain = 'Neve';
+        break;
+      case 'Clear':
+        weatherMain = 'Limpo';
+        break;
+      case 'Mist':
+        weatherMain = 'Névoa';
+        break;
+      case 'Smoke':
+        weatherMain = 'Fumo no Ar';
+        break;
+      case 'Haze':
+        weatherMain = 'Neblina';
+        break;
+      case 'Dust':
+        weatherMain = 'Pó no Ar';
+        break;
+      case 'Fog':
+        weatherMain = 'Nevoeiro';
+        break;
+      case 'Sand':
+        weatherMain = 'Areia no Ar';
+        break;
+      case 'Ash':
+        weatherMain = 'Cinza no Ar';
+        break;
+      case 'Squall':
+        weatherMain = 'Tempestade';
+        break;
+    }
+    return weatherMain;
+  }
+
   static getUrlForIcon(String iconId) {
     return 'https://openweathermap.org/img/wn/$iconId@2x.png';
   }

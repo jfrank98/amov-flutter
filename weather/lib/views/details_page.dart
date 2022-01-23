@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/intl_standalone.dart';
 import 'package:weather/generated/l10n.dart';
 import 'package:weather/models/weather_info.dart';
 import 'package:weather/providers/weather_api.dart';
@@ -7,16 +8,20 @@ import 'package:weather/views/main_page.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage(
-      {Key? key, required this.selectedWeatherInfo, required this.city})
+      {Key? key,
+      required this.selectedWeatherInfo,
+      required this.city,
+      required this.index})
       : super(key: key);
 
   final WeatherInfo selectedWeatherInfo;
   final String? city;
-
+  final int index;
   @override
   Widget build(BuildContext context) {
+    findSystemLocale();
     const textStyle = TextStyle(fontSize: 30, color: Color(0xfff8f8f2));
-    print('sunset ${selectedWeatherInfo.sunsetTime}');
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: Padding(
@@ -60,7 +65,20 @@ class DetailsPage extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                selectedWeatherInfo.weather,
+                                  index == 0
+                                      ? S.of(context).pageToday
+                                      : DateFormat.yMEd(Intl.systemLocale)
+                                          .format(DateTime
+                                              .fromMillisecondsSinceEpoch(
+                                                  selectedWeatherInfo.date *
+                                                      1000)),
+                                  style: const TextStyle(
+                                      color: Color(0xFFf8f8f2), fontSize: 30)),
+                              Text(
+                                Intl.systemLocale == 'pt_PT'
+                                    ? WeatherAPI.getWeatherPT(
+                                        selectedWeatherInfo.weather)
+                                    : selectedWeatherInfo.weather,
                                 style: textStyle,
                               ),
                               Image.network(
@@ -114,7 +132,7 @@ class DetailsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
@@ -142,7 +160,7 @@ class DetailsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(

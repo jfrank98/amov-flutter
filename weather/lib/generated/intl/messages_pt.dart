@@ -22,9 +22,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(temp) => "Temperature atual: ${temp}";
 
-  static String m1(feelsLike) => "Parecem: ${feelsLike}";
+  static String m1(feelsLike) => "Sensação: ${feelsLike}";
 
-  static String m2(forecast) => "Forecast time: ${forecast}";
+  static String m2(forecast) => "Previsão feita às: ${forecast}";
 
   static String m3(name) => "Bem vindo ${name}";
 
@@ -37,7 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'other': 'Boas visitante!',
           })}";
 
-  static String m6(updateTime) => "Last updated: ${updateTime}";
+  static String m6(updateTime) => "Ultima atualização: ${updateTime}";
 
   static String m7(maxTemp) => "Temperatura máxima: ${maxTemp}";
 
@@ -50,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m11(howMany) =>
       "${Intl.plural(howMany, one: '1 mensagem', other: '${howMany} mensagens')}";
 
-  static String m12(sunrise) => "Nasecer do sol: ${sunrise}";
+  static String m12(sunrise) => "Nascer do sol: ${sunrise}";
 
   static String m13(sunset) => "Pôr do sol: ${sunset}";
 
@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pageReturnToMain":
             MessageLookupByLibrary.simpleMessage("Voltar à página principal"),
         "pageSunrise": m12,
-        "pageSunset": m13
+        "pageSunset": m13,
+        "pageToday": MessageLookupByLibrary.simpleMessage("hoje")
       };
 }

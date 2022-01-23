@@ -5,17 +5,18 @@
     "pageHomeWelcomeRole": "{role, select, admin {Boas admin!} manager {Boas gestor!} other {Boas visitante!}}",
     "pageNotificationsCount": "{howMany, plural, one{1 mensagem} other{{howMany} mensagens}}",
     "pageCurrentTemperature": "Temperature atual: {temp}",
-    "pageFeelsLike": "Parecem: {feelsLike}",
+    "pageFeelsLike": "Sensação: {feelsLike}",
     "pageMaxTemp": "Temperatura máxima: {maxTemp}",
     "pageMinTemp": "Temperature mínima: {minTemp}",
     "pageRefreshWeatherData": "Atualizar",
     "pageDaily": "Diariamente",
     "pageHourly": "Por hora",
     "pageReturnToMain": "Voltar à página principal",
-    "pageSunrise": "Nasecer do sol: {sunrise}",
+    "pageSunrise": "Nascer do sol: {sunrise}",
     "pageSunset": "Pôr do sol: {sunset}",
     "pageMoonrise": "Nascer da lua: {moonrise}",
     "pageMoonset": "Pôr da lua: {moonset}",
-    "pageLastUpdate": "Last updated: {updateTime}",
-    "pageForecastTime": "Forecast time: {forecast}"
+    "pageLastUpdate": "Ultima atualização: {updateTime}",
+    "pageForecastTime": "Previsão feita às: {forecast}",
+    "pageToday": "hoje"
 }

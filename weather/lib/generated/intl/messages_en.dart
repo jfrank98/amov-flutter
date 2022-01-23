@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pageReturnToMain":
             MessageLookupByLibrary.simpleMessage("Return to main page"),
         "pageSunrise": m12,
-        "pageSunset": m13
+        "pageSunset": m13,
+        "pageToday": MessageLookupByLibrary.simpleMessage("Today")
       };
 }

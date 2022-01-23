@@ -249,6 +249,16 @@ class S {
       args: [forecast],
     );
   }
+
+  /// `Today`
+  String get pageToday {
+    return Intl.message(
+      'Today',
+      name: 'pageToday',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

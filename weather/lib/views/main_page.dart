@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/intl_standalone.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather/generated/l10n.dart';
@@ -107,6 +108,11 @@ class _MainPageState extends State<MainPage> {
       minTemp = current.minTemp;
       imageUrl = WeatherAPI.getUrlForIcon(current.iconId);
       weatherMain = current.weather;
+      findSystemLocale();
+
+      if (Intl.systemLocale == 'pt_PT') {
+        weatherMain = WeatherAPI.getWeatherPT(weatherMain);
+      }
     });
   }
 
@@ -133,8 +139,13 @@ class _MainPageState extends State<MainPage> {
       currentTemperature = current.temp;
 
       weatherMain = current.weather;
+      findSystemLocale();
+
+      if (Intl.systemLocale == 'pt_PT') {
+        weatherMain = WeatherAPI.getWeatherPT(weatherMain);
+      }
+
       imageUrl = WeatherAPI.getUrlForIcon(current.iconId);
-      developer.log("aferg ${json['lat']} ${json['lon']}");
     });
 
     _updateDataFromSharedPreferences(json);
@@ -142,10 +153,10 @@ class _MainPageState extends State<MainPage> {
 
   List<Widget> _getChildrenForHorizontalWeather() {
     List<Widget> widgetList = [];
-
+    findSystemLocale();
     switch (requestedForecast) {
       case FORECAST_TYPE.DAILY:
-        var i = 1;
+        var i = 0;
         for (WeatherInfo dailyInfo in daily) {
           widgetList.add(InkWell(
               onTap: () {
@@ -153,9 +164,9 @@ class _MainPageState extends State<MainPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => DetailsPage(
-                              selectedWeatherInfo: dailyInfo,
-                              city: city,
-                            )));
+                            selectedWeatherInfo: dailyInfo,
+                            city: city,
+                            index: i)));
               },
               //splashColor: const Color(0xFF000000),
               child: Container(
@@ -183,9 +194,11 @@ class _MainPageState extends State<MainPage> {
                           child: Column(
                         children: [
                           Text(
-                              DateFormat.E().format(
-                                  DateTime.fromMillisecondsSinceEpoch(
-                                      dailyInfo.date * 1000)),
+                              i == 0
+                                  ? S.of(context).pageToday
+                                  : DateFormat.E(Intl.systemLocale).format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          dailyInfo.date * 1000)),
                               style: const TextStyle(
                                   color: Color(0xFFf8f8f2), fontSize: 20)),
                           Image.network(
@@ -197,6 +210,7 @@ class _MainPageState extends State<MainPage> {
                                   color: Color(0xFFf8f8f2), fontSize: 20)),
                         ],
                       ))))));
+          i++;
         }
 
         break;

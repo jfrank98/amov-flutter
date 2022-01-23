@@ -17,5 +17,6 @@
     "pageMoonrise": "Moonrise: {moonrise}",
     "pageMoonset": "Moonset: {moonset}",
     "pageLastUpdate": "Last updated: {updateTime}",
-    "pageForecastTime": "Forecast time: {forecast}"
+    "pageForecastTime": "Forecast time: {forecast}",
+    "pageToday": "Today"
 }
